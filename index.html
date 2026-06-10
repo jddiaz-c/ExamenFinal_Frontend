@@ -1,1 +1,42 @@
 <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporate Solutions — Acceso</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-brand">
+            <h1>Corporate Solutions</h1>
+            <p>Sistema de gestión de incapacidades</p>
+        </div>
+        <div class="login-card">
+            <h2>Iniciar sesión</h2>
+            <div class="alert-error" id="error-msg"></div>
+            <div class="form-group">
+                <label for="usuario">Usuario o correo</label>
+                <div class="input-wrapper">
+                    <i class="ti ti-user" aria-hidden="true"></i>
+                    <input type="text" id="usuario" placeholder="usuario o correo">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="contrasena">Contraseña</label>
+                <div class="input-wrapper">
+                    <i class="ti ti-lock" aria-hidden="true"></i>
+                    <input type="password" id="contrasena" placeholder="••••••••">
+                </div>
+            </div>
+            <button class="btn-login" id="btn-login">Iniciar sesión</button>
+        </div>
+    </div>
+    <script src="js/config/api.js"></script>
+    <script src="js/services/authService.js"></script>
+    <script src="js/utils/auth.js"></script>
+    <script src="js/pages/index.js"></script>
+</body>
+</html>

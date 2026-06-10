@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporate Solutions — Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <h1>Corporate Solutions</h1>
+                <span>Sistema de incapacidades</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <i class="ti ti-layout-dashboard" aria-hidden="true"></i>
+                    Dashboard
+                </a>
+                <a href="empleados.html" class="nav-item">
+                    <i class="ti ti-users" aria-hidden="true"></i>
+                    Empleados
+                </a>
+                <a href="incapacidades.html" class="nav-item">
+                    <i class="ti ti-file-medical" aria-hidden="true"></i>
+                    Incapacidades
+                </a>
+                <a href="seguimiento.html" class="nav-item">
+                    <i class="ti ti-timeline" aria-hidden="true"></i>
+                    Seguimiento
+                </a>
+                <a href="usuarios.html" class="nav-item" id="nav-usuarios">
+                    <i class="ti ti-shield" aria-hidden="true"></i>
+                    Usuarios
+                </a>
+            </nav>
+        </aside>
+        <div class="main">
+            <header class="header">
+                <h2>Dashboard</h2>
+                <div class="header-user">
+                    <div class="user-info">
+                        <div class="user-avatar" id="user-avatar"></div>
+                        <div>
+                            <p id="user-nombre"></p>
+                            <span id="user-rol"></span>
+                        </div>
+                        <i class="ti ti-chevron-down" aria-hidden="true"></i>
+                    </div>
+                    <button class="btn-logout" id="btn-logout" aria-label="Cerrar sesión">
+                        <i class="ti ti-logout" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </header>
+            <main class="content">
+                <div class="metrics">
+                    <div class="metric-card">
+                        <p>Empleados activos</p>
+                        <h3 id="total-empleados">—</h3>
+                    </div>
+                    <div class="metric-card">
+                        <p>Incapacidades activas</p>
+                        <h3 id="total-incapacidades">—</h3>
+                    </div>
+                    <div class="metric-card">
+                        <p>En revisión</p>
+                        <h3 id="total-revision">—</h3>
+                    </div>
+                    <div class="metric-card">
+                        <p>Aprobadas</p>
+                        <h3 id="total-aprobadas">—</h3>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="header-card">
+                        <p>Incapacidades recientes</p>
+                        <a href="incapacidades.html" class="btn btn-secondary btn-sm">Ver todas</a>
+                    </div>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Empleado</th>
+                                    <th>Tipo</th>
+                                    <th>Fecha inicio</th>
+                                    <th>Días</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-recientes">
+                                <tr>
+                                    <td colspan="5" class="center-text">Cargando...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="js/config/api.js"></script>
+    <script src="js/utils/auth.js"></script>
+    <script src="js/pages/dashboard.js"></script>
+    <script src="js/services/empleadosService.js"></script>
+    <script src="js/services/incapacidadesService.js"></script>
+    <script src="js/services/seguimientoService.js"></script>
+</body>
+</html>

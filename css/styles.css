@@ -426,6 +426,19 @@ tbody tr:hover {
     margin-bottom:16px;
 }
 
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.modal-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+}
+
 /* ALERTAS */
 .alert {
     padding: 10px 14px;
@@ -440,7 +453,7 @@ tbody tr:hover {
 /* SEARCH */
 .search-bar {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 8px;
     margin-bottom: 16px;
 }
@@ -488,4 +501,32 @@ body {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(6px); }
     to   { opacity: 1; transform: translateY(0); }
+}
+
+
+.search-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.filter-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.search-bar input[type="date"] {
+    padding: 8px 12px;
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    outline: none;
+}
+
+.search-bar input[type="date"]:focus {
+    border-color: var(--accent);
 }

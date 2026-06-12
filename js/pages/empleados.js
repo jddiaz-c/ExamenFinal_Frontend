@@ -3,69 +3,80 @@ Auth.mostrarUsuario();
 Auth.ocultarSiNoEsAdmin();
 
 let empleadoEditandoId = null;
+let todosLosEmpleados = [];
 
 document.getElementById('btn-logout').addEventListener('click', async () => {
     try { await authApi.logout(); } catch (e) {}
     finally { Auth.cerrarSesion(); }
 });
 
-// CARGAR TABLA
-async function cargarEmpleados(params = {}) {
+// CARGAR
+async function cargarEmpleados() {
     const tbody = document.getElementById('tabla-empleados');
     tbody.innerHTML = '<tr><td colspan="7" class="center-text">Cargando...</td></tr>';
 
     try {
-        const tieneParams = Object.values(params).some(v => v !== '');
-        const empleados = tieneParams
-            ? await empleadosApi.buscar(params)
-            : await empleadosApi.getAll();
-
-        if (empleados.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="7" class="center-text">Sin resultados</td></tr>';
-            return;
-        }
-
-        tbody.innerHTML = empleados.map(e => `
-            <tr>
-                <td>${e.nombres} ${e.apellidos}</td>
-                <td>${e.documento}</td>
-                <td>${e.cargo}</td>
-                <td>${e.area}</td>
-                <td>${e.fecha_ingreso}</td>
-                <td><span class="badge badge-${e.estado}">${e.estado}</span></td>
-                <td>
-                    <button class="btn btn-secondary btn-sm" onclick='abrirEditar(${JSON.stringify(e)})'>
-                        <i class="ti ti-edit" aria-hidden="true"></i>
-                    </button>
-                    <button class="btn btn-secondary btn-sm" onclick="abrirCambiarEstado(${e.id}, '${e.estado}')">
-                        <i class="ti ti-refresh" aria-hidden="true"></i>
-                    </button>
-                </td>
-            </tr>
-        `).join('');
+        todosLosEmpleados = await empleadosApi.getAll();
+        renderizarEmpleados(todosLosEmpleados);
     } catch (e) {
-        tbody.innerHTML = `<tr><td colspan="7" class="center-text">${e.message}</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="center-text">Error: ${e.message}</td></tr>`;
     }
 }
 
-// BUSCAR
-document.getElementById('btn-buscar').addEventListener('click', () => {
-    const input = document.getElementById('buscar-input').value.trim();
+// FILTRAR
+function filtrarEmpleados() {
+    const input = document.getElementById('buscar-input').value.trim().toLowerCase();
     const estado = document.getElementById('filtro-estado').value;
-    const params = {};
 
-    if (estado) params.estado = estado;
+    let resultado = todosLosEmpleados;
 
-    if (input) {
-        if (/^[0-9]+$/.test(input)) {
-            params.documento = input;
-        } else {
-            params.area = input;
-        }
+    if (estado) {
+        resultado = resultado.filter(e => e.estado === estado);
     }
 
-    cargarEmpleados(params);
-});
+    if (input) {
+        resultado = resultado.filter(e =>
+            e.documento.includes(input) ||
+            e.area.toLowerCase().includes(input) ||
+            e.nombres.toLowerCase().includes(input) ||
+            e.apellidos.toLowerCase().includes(input)
+        );
+    }
+
+    renderizarEmpleados(resultado);
+}
+
+// RENDERIZAR
+function renderizarEmpleados(empleados) {
+    const tbody = document.getElementById('tabla-empleados');
+
+    if (empleados.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="center-text">Sin resultados</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = empleados.map(e => `
+        <tr>
+            <td>${e.nombres} ${e.apellidos}</td>
+            <td>${e.documento}</td>
+            <td>${e.cargo}</td>
+            <td>${e.area}</td>
+            <td>${e.fecha_ingreso}</td>
+            <td><span class="badge badge-${e.estado}">${e.estado}</span></td>
+            <td>
+                <button class="btn btn-secondary btn-sm" onclick='abrirEditar(${JSON.stringify(e)})'>
+                    <i class="ti ti-edit" aria-hidden="true"></i>
+                </button>
+                <button class="btn btn-secondary btn-sm" onclick="abrirCambiarEstado(${e.id}, '${e.estado}')">
+                    <i class="ti ti-refresh" aria-hidden="true"></i>
+                </button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+document.getElementById('buscar-input').addEventListener('input', filtrarEmpleados);
+document.getElementById('filtro-estado').addEventListener('change', filtrarEmpleados);
 
 // MODAL CREAR/EDITAR
 function abrirModal(titulo) {
@@ -130,7 +141,7 @@ document.getElementById('btn-guardar').addEventListener('click', async () => {
             await empleadosApi.create(data);
         }
         cerrarModal();
-        cargarEmpleados();
+        await cargarEmpleados();
     } catch (e) {
         errorEl.textContent = e.message;
         errorEl.style.display = 'block';
@@ -159,7 +170,7 @@ document.getElementById('btn-guardar-estado').addEventListener('click', async ()
     try {
         await empleadosApi.cambiarEstado(estadoEmpleadoId, { estado });
         document.getElementById('modal-estado').classList.remove('active');
-        cargarEmpleados();
+        await cargarEmpleados();
     } catch (e) {
         alert(e.message);
     }

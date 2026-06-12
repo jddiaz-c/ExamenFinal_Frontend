@@ -1,0 +1,194 @@
+/* ============================================================
+   VARIABLES Y TEMA
+   ============================================================ */
+
+:root {
+    --color-bg: #F5F6FA;
+    --color-surface: #FFFFFF;
+    --color-surface-raised: #FFFFFF;
+    --color-border: #E4E7EE;
+    --color-border-subtle: #EEF0F6;
+
+    --color-text-primary: #111827;
+    --color-text-secondary: #5A6478;
+    --color-text-tertiary: #9AA0AE;
+    --color-text-inverse: #FFFFFF;
+
+    --color-accent: #4361EE;
+    --color-accent-hover: #3451D1;
+    --color-accent-subtle: #EEF1FD;
+    --color-accent-text: #3451D1;
+
+    --color-success: #16A34A;
+    --color-success-subtle: #DCFCE7;
+    --color-success-text: #15803D;
+
+    --color-warning: #D97706;
+    --color-warning-subtle: #FEF3C7;
+    --color-warning-text: #B45309;
+
+    --color-danger: #DC2626;
+    --color-danger-subtle: #FEE2E2;
+    --color-danger-text: #B91C1C;
+
+    --color-info: #0284C7;
+    --color-info-subtle: #E0F2FE;
+    --color-info-text: #0369A1;
+
+    --color-neutral: #6B7280;
+    --color-neutral-subtle: #F3F4F6;
+    --color-neutral-text: #4B5563;
+
+    --color-purple-subtle: #EDE9FE;
+    --color-purple-text: #7C3AED;
+
+    --sidebar-width: 240px;
+    --sidebar-width-collapsed: 64px;
+    --topbar-height: 60px;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 18px;
+    --radius-full: 9999px;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.10);
+    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.14);
+
+    --transition: 0.18s ease;
+    --transition-slow: 0.3s ease;
+
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+[data-theme="dark"] {
+    --color-bg: #0D0F17;
+    --color-surface: #141720;
+    --color-surface-raised: #1C2030;
+    --color-border: #252A3A;
+    --color-border-subtle: #1C2030;
+
+    --color-text-primary: #F0F2F8;
+    --color-text-secondary: #8892A4;
+    --color-text-tertiary: #55607A;
+    --color-text-inverse: #0D0F17;
+
+    --color-accent: #5B78F5;
+    --color-accent-hover: #7490F8;
+    --color-accent-subtle: #1A1F35;
+    --color-accent-text: #8BA0FF;
+
+    --color-success: #22C55E;
+    --color-success-subtle: #0D2A1A;
+    --color-success-text: #4ADE80;
+
+    --color-warning: #F59E0B;
+    --color-warning-subtle: #2A1E05;
+    --color-warning-text: #FCD34D;
+
+    --color-danger: #EF4444;
+    --color-danger-subtle: #2A0D0D;
+    --color-danger-text: #FCA5A5;
+
+    --color-info: #38BDF8;
+    --color-info-subtle: #082035;
+    --color-info-text: #7DD3FC;
+
+    --color-neutral: #8892A4;
+    --color-neutral-subtle: #1C2030;
+    --color-neutral-text: #A0AABA;
+
+    --color-purple-subtle: #1E1535;
+    --color-purple-text: #A78BFA;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+}
+
+/* ============================================================
+   RESET
+   ============================================================ */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    line-height: 1.5;
+    min-height: 100vh;
+    transition: background-color var(--transition-slow), color var(--transition-slow);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+input, textarea, select {
+    font-family: inherit;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+/* ============================================================
+   UTILIDADES
+   ============================================================ */
+
+.hidden {
+    display: none !important;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.text-secondary {
+    color: var(--color-text-secondary);
+}
+
+.text-sm {
+    font-size: 0.85rem;
+}
+
+.text-xs {
+    font-size: 0.75rem;
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+.font-semibold {
+    font-weight: 600;
+}

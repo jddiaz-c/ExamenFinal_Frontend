@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporate Solutions — Gestión de Incapacidades</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/main.css">
+    <link rel="stylesheet" href="./assets/css/layout.css">
+    <link rel="stylesheet" href="./assets/css/components.css">
+    <link rel="stylesheet" href="./assets/css/views.css">
+</head>
+<body>
+
+    <div id="app">
+
+        <div id="login-screen" class="login-screen hidden">
+            <div class="login-card">
+                <div class="login-brand">
+                    <span class="login-brand-mark"></span>
+                    <span class="login-brand-name">Corporate Solutions</span>
+                </div>
+                <h1 class="login-title">Ingresa a tu cuenta</h1>
+                <p class="login-subtitle">Sistema de gestión de incapacidades médicas</p>
+                <div id="login-error" class="alert alert-error hidden"></div>
+                <form id="login-form" novalidate>
+                    <div class="field">
+                        <label class="field-label" for="login-usuario">Usuario o correo</label>
+                        <input class="field-input" type="text" id="login-usuario" name="usuario" autocomplete="username">
+                    </div>
+                    <div class="field">
+                        <label class="field-label" for="login-contrasena">Contraseña</label>
+                        <input class="field-input" type="password" id="login-contrasena" name="contrasena" autocomplete="current-password">
+                    </div>
+                    <button class="btn btn-primary btn-full" type="submit" id="login-btn">Ingresar</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="main-layout" class="main-layout hidden">
+
+            <aside id="sidebar" class="sidebar">
+                <div class="sidebar-header">
+                    <span class="sidebar-brand-mark"></span>
+                    <span class="sidebar-brand-name">Corporate</span>
+                    <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Colapsar menú"></button>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <a class="nav-item" data-view="dashboard" href="#/dashboard">
+                        <span class="nav-icon nav-icon-dashboard"></span>
+                        <span class="nav-label">Panel principal</span>
+                    </a>
+                    <a class="nav-item" data-view="empleados" href="#/empleados" data-roles="administrador,gestion_humana">
+                        <span class="nav-icon nav-icon-empleados"></span>
+                        <span class="nav-label">Empleados</span>
+                    </a>
+                    <a class="nav-item" data-view="incapacidades" href="#/incapacidades">
+                        <span class="nav-icon nav-icon-incapacidades"></span>
+                        <span class="nav-label">Incapacidades</span>
+                    </a>
+                    <a class="nav-item" data-view="seguimiento" href="#/seguimiento" data-roles="administrador,gestion_humana">
+                        <span class="nav-icon nav-icon-seguimiento"></span>
+                        <span class="nav-label">Seguimiento</span>
+                    </a>
+                    <a class="nav-item" data-view="usuarios" href="#/usuarios" data-roles="administrador">
+                        <span class="nav-icon nav-icon-usuarios"></span>
+                        <span class="nav-label">Usuarios</span>
+                    </a>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <a class="nav-item" data-view="configuracion" href="#/configuracion">
+                        <span class="nav-icon nav-icon-config"></span>
+                        <span class="nav-label">Configuración</span>
+                    </a>
+                    <button class="nav-item nav-item-btn" id="logout-btn">
+                        <span class="nav-icon nav-icon-logout"></span>
+                        <span class="nav-label">Cerrar sesión</span>
+                    </button>
+                </div>
+            </aside>
+
+            <div class="main-content">
+                <header class="topbar">
+                    <div class="topbar-left">
+                        <h2 class="topbar-title" id="topbar-title">Panel principal</h2>
+                    </div>
+                    <div class="topbar-right">
+                        <button class="topbar-btn" id="theme-toggle" aria-label="Cambiar tema">
+                            <span class="icon-theme"></span>
+                        </button>
+                        <button class="topbar-btn topbar-notifications" id="notifications-btn" aria-label="Notificaciones">
+                            <span class="icon-bell"></span>
+                            <span class="notif-badge hidden" id="notif-badge"></span>
+                        </button>
+                        <div class="topbar-user" id="topbar-user">
+                            <span class="user-avatar" id="user-avatar"></span>
+                            <div class="user-info">
+                                <span class="user-name" id="user-name"></span>
+                                <span class="user-role" id="user-role"></span>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <div id="notifications-panel" class="notifications-panel hidden">
+                    <div class="notif-panel-header">
+                        <span class="notif-panel-title">Actividad reciente</span>
+                        <button class="notif-panel-close" id="notif-close">Cerrar</button>
+                    </div>
+                    <div id="notifications-list" class="notif-list"></div>
+                </div>
+
+                <main id="view-container" class="view-container"></main>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="modal-overlay" class="modal-overlay hidden">
+        <div id="modal-box" class="modal-box">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title"></h3>
+                <button class="modal-close" id="modal-close">&#x2715;</button>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
+            <div class="modal-footer" id="modal-footer"></div>
+        </div>
+    </div>
+
+    <div id="panel-overlay" class="panel-overlay hidden">
+        <div id="side-panel" class="side-panel">
+            <div class="panel-header">
+                <h3 class="panel-title" id="panel-title"></h3>
+                <button class="panel-close" id="panel-close">&#x2715;</button>
+            </div>
+            <div class="panel-body" id="panel-body"></div>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script type="module" src="./assets/js/app.js"></script>
+</body>
+</html>

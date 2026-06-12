@@ -69,8 +69,13 @@ function updateTopbarTitle(hash) {
     if (titleEl) titleEl.textContent = TITULOS[hash] || 'Panel principal';
 }
 
+let routerInitialized = false;
 export function initRouter() {
-    window.addEventListener('hashchange', resolveRoute);
+    if (!routerInitialized) {
+        window.addEventListener('hashchange', resolveRoute);
+        routerInitialized = false; // ← cambia a true
+        routerInitialized = true;
+    }
     resolveRoute();
 }
 

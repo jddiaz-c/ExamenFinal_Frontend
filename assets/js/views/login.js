@@ -5,13 +5,18 @@ import { $, show, hide } from '../utils/dom.js';
 export function initLogin(onSuccess) {
     const form     = $('#login-form');
     const errorEl  = $('#login-error');
-    const btnLogin = $('#login-btn');
 
-    form.addEventListener('submit', async (e) => {
+    // Limpiar listeners anteriores
+    const formClone = form.cloneNode(true);
+    form.parentNode.replaceChild(formClone, form);
+
+    const btnLogin = formClone.querySelector('#login-btn');
+
+    formClone.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const usuario    = $('#login-usuario').value.trim();
-        const contrasena = $('#login-contrasena').value.trim();
+        const usuario    = formClone.querySelector('#login-usuario').value.trim();
+        const contrasena = formClone.querySelector('#login-contrasena').value.trim();
 
         hide(errorEl);
 
@@ -27,7 +32,6 @@ export function initLogin(onSuccess) {
         try {
             const payload = {};
 
-            // Detectar si es correo o usuario
             if (usuario.includes('@')) {
                 payload.correo = usuario;
             } else {

@@ -137,17 +137,22 @@ function renderTimelineReciente() {
         return renderEmpty('Sin actividad', 'No hay seguimientos registrados.');
     }
 
-    return recientes.map(seg => `
-        <div class="timeline-item">
-            <span class="timeline-dot timeline-dot-${seg.estado}"></span>
-            <div class="timeline-date">${formatFechaCorta(seg.fecha)}</div>
-            <div class="timeline-content">
-                <div class="timeline-header">${badgeEstado(seg.estado)}</div>
-                <div class="timeline-comment">${seg.comentario}</div>
-                <div class="timeline-user">Por: ${seg.usuario_responsable}</div>
+    return recientes.map(seg => {
+        const inc = todasInc.find(i => i.id == seg.incapacidad_id);
+        const nombreEmp = inc ? nomEmp(inc.empleado_id) : 'Empleado desconocido';
+        
+        return `
+            <div class="timeline-item">
+                <span class="timeline-dot timeline-dot-${seg.estado}"></span>
+                <div class="timeline-date">${formatFechaCorta(seg.fecha)}</div>
+                <div class="timeline-content">
+                    <div class="timeline-header">${badgeEstado(seg.estado)}</div>
+                    <div class="timeline-comment"><strong>${nombreEmp}</strong> — ${seg.comentario}</div>
+                    <div class="timeline-user">Por: ${seg.usuario_responsable}</div>
+                </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 function attachIncEvents(container) {

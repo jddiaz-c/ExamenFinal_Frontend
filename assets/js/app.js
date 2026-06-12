@@ -66,6 +66,8 @@ function mostrarLogin() {
 // ============================================================
 
 async function iniciarApp() {
+    // Cerrar y limpiar panel de notificaciones al iniciar
+    hide(document.getElementById('notifications-panel'));
     const usuario = getUsuario();
     const rol     = getRol();
 
@@ -96,6 +98,16 @@ async function iniciarApp() {
         }
     });
 
+    // Ocultar notificaciones para empleados
+    if (rol === 'empleado') {
+    hide(document.getElementById('notifications-btn'));
+    }  else {
+        show(document.getElementById('notifications-btn'));
+    }
+
+    // Cargar notificaciones
+    await cargarNotificaciones();
+
     // Registrar rutas
     registerRoute('#/dashboard', (container, token) => {
         if (rol === 'administrador')  renderDashboardAdmin(container, token);
@@ -119,7 +131,11 @@ async function iniciarApp() {
     });
 
     // Tema toggle (topbar)
-    document.getElementById('theme-toggle')?.addEventListener('click', () => {
+    const themeBtn = document.getElementById('theme-toggle');
+    const themeBtnClone = themeBtn.cloneNode(true);
+    themeBtn.parentNode.replaceChild(themeBtnClone, themeBtn);
+
+    themeBtnClone.addEventListener('click', () => {
         const html = document.documentElement;
         const esOscuro = html.getAttribute('data-theme') === 'dark';
         html.setAttribute('data-theme', esOscuro ? 'light' : 'dark');
@@ -127,8 +143,11 @@ async function iniciarApp() {
     });
 
     // Notificaciones
-    await cargarNotificaciones();
-    document.getElementById('notifications-btn')?.addEventListener('click', () => {
+    const notifBtn = document.getElementById('notifications-btn');
+    const notifBtnClone = notifBtn.cloneNode(true);
+    notifBtn.parentNode.replaceChild(notifBtnClone, notifBtn);
+
+    notifBtnClone.addEventListener('click', () => {
         const panel = document.getElementById('notifications-panel');
         panel.classList.toggle('hidden');
     });
@@ -150,9 +169,9 @@ async function iniciarApp() {
     document.getElementById('logout-btn')?.addEventListener('click', async () => {
         try {
             await logout();
-        } catch { /* Si falla el logout, igual limpiamos la sesión */ }
+        } catch { }
         clearSession();
-        window.location.hash = '';
+        history.replaceState(null, '', ' '); // ← no dispara hashchange
         hide(document.getElementById('main-layout'));
         mostrarLogin();
     });
@@ -164,19 +183,26 @@ async function iniciarApp() {
 
 async function cargarNotificaciones() {
     const rol = getRol();
+    console.log('cargarNotificaciones, rol:', rol);
+    const lista  = document.getElementById('notifications-list');
+    const badge  = document.getElementById('notif-badge');
+
+    // Limpiar estado anterior
+    lista.innerHTML = '';
+    hide(badge);
     // Solo admin y GH ven notificaciones de actividad global
     if (rol !== 'administrador' && rol !== 'gestion_humana') return;
 
     try {
         const segs = await getSeguimientos();
+                console.log('seguimientos obtenidos:', segs.length);
+
         const recientes = [...segs]
             .sort((a, b) => new Date(b.created_at || b.fecha) - new Date(a.created_at || a.fecha))
             .slice(0, 15);
 
         setNotificaciones(recientes);
 
-        const lista   = document.getElementById('notifications-list');
-        const badge   = document.getElementById('notif-badge');
         const hoy     = new Date().toISOString().split('T')[0];
         const nuevas  = recientes.filter(s => s.fecha === hoy || (s.created_at && s.created_at.startsWith(hoy)));
 

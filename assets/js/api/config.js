@@ -9,6 +9,7 @@ export const API = {
 // Helper base para fetch autenticado
 export async function apiFetch(baseUrl, path, options = {}) {
     const token = localStorage.getItem('token');
+    console.log('apiFetch:', path, 'token:', token ? token.substring(0, 10) + '...' : 'NINGUNO');
 
     const headers = {
         'Content-Type': 'application/json',

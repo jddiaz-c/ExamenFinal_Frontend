@@ -164,12 +164,10 @@ function abrirFormUsuario(u, container) {
                 <label class="field-label">Nombre de usuario</label>
                 <input class="field-input" id="usr-usuario" type="text" value="${u?.usuario || ''}">
             </div>
-            ${!esEdicion ? `
             <div class="field">
                 <label class="field-label">Contraseña</label>
                 <input class="field-input" id="usr-contrasena" type="password">
             </div>
-            ` : ''}
             <div class="field">
                 <label class="field-label">Rol</label>
                 <select class="field-select" id="usr-rol">
@@ -196,9 +194,14 @@ function abrirFormUsuario(u, container) {
             rol:     document.getElementById('usr-rol').value
         };
 
-        if (!esEdicion) {
-            data.contrasena = document.getElementById('usr-contrasena').value.trim();
-        }
+        const contrasena = document.getElementById('usr-contrasena').value.trim();
+        if (contrasena) data.contrasena = contrasena; // ← solo si se llenó
+
+        if (!esEdicion && !contrasena) {
+            errorEl.textContent = 'La contraseña es obligatoria al crear un usuario.';
+            errorEl.classList.remove('hidden');
+            return;
+        }       
 
         if (!data.nombre || !data.correo || !data.usuario || (!esEdicion && !data.contrasena)) {
             errorEl.textContent = 'Completa todos los campos obligatorios.';

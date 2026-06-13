@@ -84,6 +84,8 @@ function renderVista(container) {
                 <option value="licencia_medica">Licencia médica</option>
                 <option value="incapacidad_temporal">Incapacidad temporal</option>
             </select>
+            <input class="field-input select-auto-md" type="date" id="filter-fecha-desde" title="Desde">
+            <input class="field-input select-auto-md" type="date" id="filter-fecha-hasta" title="Hasta">
         </div>
 
         <div class="table-wrapper">
@@ -110,15 +112,20 @@ function renderVista(container) {
     const filterTipo = container.querySelector('#filter-tipo-inc');
 
     function filtrar() {
-        const q    = search.value.toLowerCase();
-        const est  = filterEst.value;
-        const tipo = filterTipo.value;
+        const q       = search.value.toLowerCase();
+        const est     = filterEst.value;
+        const tipo    = filterTipo.value;
+        const desde   = container.querySelector('#filter-fecha-desde').value;
+        const hasta   = container.querySelector('#filter-fecha-hasta').value;
 
         const filtrados = todasInc.filter(inc => {
             const nombre = nomEmp(inc.empleado_id).toLowerCase();
-            return (!q || nombre.includes(q))
+            const fechaInicio = inc.fecha_inicio.substring(0, 10);
+            return (!q    || nombre.includes(q))
                 && (!est  || inc.estado === est)
-                && (!tipo || inc.tipo   === tipo);
+                && (!tipo || inc.tipo   === tipo)
+                && (!desde || fechaInicio >= desde)
+                && (!hasta || fechaInicio <= hasta);
         });
 
         document.getElementById('tbody-inc').innerHTML = renderFilas(filtrados, puedeGestionar);
@@ -128,6 +135,8 @@ function renderVista(container) {
     search.addEventListener('input', filtrar);
     filterEst.addEventListener('change', filtrar);
     filterTipo.addEventListener('change', filtrar);
+    container.querySelector('#filter-fecha-desde').addEventListener('change', filtrar);
+    container.querySelector('#filter-fecha-hasta').addEventListener('change', filtrar);
 
     if (puedeGestionar) {
         container.querySelector('#btn-nueva-inc')?.addEventListener('click', () => {
